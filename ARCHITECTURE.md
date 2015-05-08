@@ -1,5 +1,3 @@
 # Blink Architecture Design
 
-## Overview
-
 When a streamer begins a stream by making a `POST /streams` request, the Podium API server will then make a `POST /channels` request to *Blink* and receive a channel url. This hash will be included in the response to the App. Any future requests to `GET /streams/:hash/comments` will also include the url. The app will use this url to communicate to the Blink server via the WebSocket API.
