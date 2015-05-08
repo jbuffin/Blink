@@ -2,11 +2,8 @@
 
 ## API
 
-### `POST /channels`
-Create a new channel.
+### `POST /events`
+Send a broadcast event.
 
-### `POST /channels/:hash`
-Send a message to a channel.
-
-### `ws://server-url/channels/:hash`
+### `ws://server-url/events`
 From a WebSocket client, listen to a channel for messages.
