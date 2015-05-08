@@ -28,14 +28,22 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
-      $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
+      $('form').submit(function() {
+        var msg = $('#m').val();
+        sendMessage(msg);
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        appendMessage(msg);
       });
+      function appendMessage(msg) {
+        $('#messages').append($('<li>').text(msg));
+      }
+      function sendMessage(msg) {
+        socket.emit('chat message', msg);
+        appendMessage(msg);
+      }
     </script>
   </body>
 </html>
