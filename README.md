@@ -6,6 +6,7 @@ npm install -g nodemon
 npm install
 nodemon index
 ```
+Open browser to `localhost:3000`
 
 _Note: Vagrant coming soon_
 
