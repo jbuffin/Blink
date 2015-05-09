@@ -13,7 +13,17 @@ io.on('connection', function(socket) {
     console.log('user disconnected');
   });
   socket.on('chat message', function(msg) {
-    socket.broadcast.emit('chat message', msg);
+    var msgObject = {
+      user: {
+        username: "eric",
+        name: "Eric Bockmuller",
+        score: 20,
+        avatar: "http://lorempixel.com:80/128/128/people/"+Math.floor((Math.random() * 10) + 1)
+      },
+      comment: msg,
+      type: 0,
+    };
+    socket.broadcast.emit('chat message', msgObject);
   });
 });
 
