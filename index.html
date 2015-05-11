@@ -32,7 +32,7 @@
         $('#m').val('');
         return false;
       });
-      socket.on('chat message', function(msg) {
+      socket.on('comment', function(msg) {
         appendMessage(msg.comment);
       });
       function appendMessage(msg) {
