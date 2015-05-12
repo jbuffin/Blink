@@ -4,6 +4,10 @@ var io = require('socket.io')(http);
 var config = require('./config');
 var Comment = require('./Comment');
 
+if(config.multi) {
+  var redis = require('socket.io-redis');
+  io.adapter(redis(config.redis));
+}
 app.get('/', function(req, res){
   res.sendFile('index.html', {
     root: __dirname,
