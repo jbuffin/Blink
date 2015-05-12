@@ -14,7 +14,15 @@ npm install
 nodemon index
 ```
 
-If you want to run multiple instances of the socket.io server, use the following command to start and replace "port" with a different port number:
+If you want to run multiple instances of the socket.io server, you'll need to do the following: 
+
+If you don't have redis installed, install it:
+```
+brew install redis
+redis-server
+```
+
+Then, start the different node servers with a different port number for each:
 ```
 nodemon index port=3000 redis=localhost:6379 multi
 ```
