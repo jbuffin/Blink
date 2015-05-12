@@ -22,6 +22,9 @@ io.on('connection', function(socket) {
   });
   socket.on('join room', function(data) {
     console.log('joined '+data.room);
+    if(room) {
+      socket.leave(room);
+    }
     room = data.room;
     socket.join(data.room);
   });
