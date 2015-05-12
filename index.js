@@ -4,7 +4,9 @@ var io = require('socket.io')(http);
 var config = require('./config');
 
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.sendFile('index.html', {
+    root: __dirname,
+  });
 });
 
 io.on('connection', function(socket) {
