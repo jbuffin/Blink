@@ -26,6 +26,9 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
+      socket.on('connect', function() {
+        socket.emit('join room', {room: 'room2'});
+      });
       $('form').submit(function() {
         var msg = $('#m').val();
         sendMessage(msg);
