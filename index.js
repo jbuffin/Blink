@@ -28,6 +28,10 @@ io.on('connection', function(socket) {
     room = data.room;
     socket.join(data.room);
   });
+  socket.on('leave room', function(data) {
+    console.log('left '+data.room);
+    socket.leave(data.room);
+  })
   socket.on('comment', function(msg) {
     var message = new Comment(msg);
     console.log(message);
