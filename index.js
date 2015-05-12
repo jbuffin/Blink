@@ -22,6 +22,6 @@ io.on('connection', function(socket) {
   });
 });
 
-http.listen(config.defaultPort, function() {
-  console.log('listening on *:'+config.defaultPort);
+http.listen(config.port, function() {
+  console.log('listening on *:'+config.port);
 });
