@@ -31,7 +31,16 @@
       });
       $('form').submit(function() {
         var msg = $('#m').val();
-        sendMessage(msg);
+        if(msg.indexOf('/') === 0) {
+          var sep = msg.indexOf(' ');
+          var command = msg.slice(1, sep);
+          var opt = msg.slice(sep+1);
+          if(command === 'join') {
+            socket.emit('join room', {room: opt});
+          }
+        } else {
+          sendMessage(msg);
+        }
         $('#m').val('');
         return false;
       });
