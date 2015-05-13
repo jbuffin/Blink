@@ -1,5 +1,8 @@
 'use strict';
-function routes(app, io) {
+function routes(app) {
+  var config = require('./config');
+  var io = require('socket.io-emitter')(config.redis);
+
   var Comment = require('./Comment');
 
   app.get('/', function(req, res) {
@@ -10,7 +13,7 @@ function routes(app, io) {
 
   app.post('/events', function(req, res) {
     io.to(req.body.room).emit('comment', new Comment(req.body.data));
-    res.json({response:'thanks'});
+    res.json({response:'OK'});
   });
 }
 module.exports = routes;

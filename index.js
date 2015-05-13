@@ -13,7 +13,7 @@ if(config.redis) {
   io.adapter(redis(config.redis));
 }
 
-var routes = require('./routes')(app, io);
+var routes = require('./routes')(app);
 
 io.on('connection', function(socket) {
   var room;
