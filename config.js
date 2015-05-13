@@ -2,6 +2,7 @@ var ENV = 'dev'; // 'dev' | 'stage' | 'prod'
 
 var port = 3000;
 var redis = null;
+var apiKey = '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf';
 
 process.argv.forEach(function(val, index, array) {
   if(val.indexOf('port') === 0) {
@@ -13,11 +14,15 @@ process.argv.forEach(function(val, index, array) {
     redis.host = val.slice(6, sep);
     redis.port = val.slice(sep+1);
   }
+  if(val.indexOf('api_key') === 0) {
+    apiKey = val.slice(8);
+  }
 });
 var config = {
   port: port,
   env: ENV,
-  redis: redis
+  redis: redis,
+  apiKey: apiKey,
 };
 
 module.exports = config;
