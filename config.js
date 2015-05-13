@@ -1,10 +1,7 @@
 var ENV = 'dev'; // 'dev' | 'stage' | 'prod'
 
 var port = 3000;
-var redis = {
-  host: 'localhost',
-  port: 6379
-};
+var redis = null;
 var multi = false;
 
 process.argv.forEach(function(val, index, array) {
@@ -13,6 +10,7 @@ process.argv.forEach(function(val, index, array) {
   }
   if(val.indexOf('redis') === 0) {
     var sep = val.indexOf(':');
+    redis = {};
     redis.host = val.slice(6, sep);
     redis.port = val.slice(sep+1);
   }
