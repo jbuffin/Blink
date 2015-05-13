@@ -8,12 +8,11 @@ var io = require('socket.io')(http);
 var config = require('./config');
 var Comment = require('./Comment');
 
-if(config.redis) {
-  var redis = require('socket.io-redis');
-  io.adapter(redis(config.redis));
-}
-
 var routes = require('./routes')(app);
+
+if(config.redis) {
+  io.adapter(require('socket.io-redis')(config.redis));
+}
 
 io.on('connection', function(socket) {
   var room;
