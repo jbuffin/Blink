@@ -13,16 +13,7 @@ if(config.redis) {
   io.adapter(redis(config.redis));
 }
 
-app.get('/', function(req, res) {
-  res.sendFile('index.html', {
-    root: __dirname,
-  });
-});
-
-app.post('/events', function(req, res) {
-  io.to(req.body.room).emit('comment', new Comment(req.body.data));
-  res.json({response:'thanks'});
-});
+var routes = require('./routes')(app, io);
 
 io.on('connection', function(socket) {
   var room;
