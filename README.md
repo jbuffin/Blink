@@ -33,7 +33,7 @@ _Note: Vagrant coming soon_
 
 ##API
 
-#`POST /events`
+###`POST /events`
 
 Takes JSON of the form:
 ```json
