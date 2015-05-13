@@ -12,10 +12,15 @@ if(config.multi) {
   var redis = require('socket.io-redis');
   io.adapter(redis(config.redis));
 }
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile('index.html', {
     root: __dirname,
   });
+});
+
+app.post('/events', function(req, res) {
+  io.to(req.body.room).emit('comment', new Comment(req.body.data));
+  res.json({response:'thanks'});
 });
 
 io.on('connection', function(socket) {
