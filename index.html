@@ -39,6 +39,9 @@
           if(command === 'join') {
             socket.emit('join room', {room: opt});
           }
+          if(command === 'token') {
+            socket.emit('access token', {access_token: opt});
+          }
         } else {
           sendMessage(msg);
         }
