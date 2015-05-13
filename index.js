@@ -3,10 +3,12 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require('http');
+var Server = http.Server(app);
+var io = require('socket.io')(Server);
 var config = require('./config');
 var Comment = require('./Comment');
+var request = require('request');
 
 var routes = require('./routes')(app);
 
@@ -37,12 +39,18 @@ io.on('connection', function(socket) {
     socket.leave(data.room);
   });
   socket.on('comment', function(msg) {
-    var message = new Comment(msg.message);
-    console.log(message);
-    socket.broadcast.to(room).emit('comment', message);
+    var options = {
+      uri: 'http://dev-api.winkapp.us/v1/streams/'+room+'/comments',
+      qs: {access_token:accessToken},
+      json: msg.message
+    };
+    request.post(options, function(error, response, body) {
+      socket.broadcast.to(room).emit('comment', body.data);
+    });
+
   });
 });
 
-http.listen(config.port, function() {
+Server.listen(config.port, function() {
   console.log('listening on *:'+config.port);
 });

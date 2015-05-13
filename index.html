@@ -27,7 +27,7 @@
     <script>
       var socket = io();
       socket.on('connect', function() {
-        socket.emit('join room', {room: 'room2'});
+        socket.emit('join room', {room: '83n'});
         socket.emit('access token', {access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm'})
       });
       $('form').submit(function() {
@@ -53,12 +53,6 @@
       }
       function sendMessage(msg) {
         var msgObject = {
-          user: {
-            username: "eric",
-            name: "Eric Bockmuller",
-            score: 20,
-            avatar: "http://lorempixel.com:80/128/128/people/"+Math.floor((Math.random() * 10) + 1)
-          },
           comment: msg,
           type: 0,
         };
