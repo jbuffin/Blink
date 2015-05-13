@@ -15,7 +15,8 @@ if(config.redis) {
 }
 
 io.on('connection', function(socket) {
-  var room;
+  var room,
+      accessToken;
   console.log('a user connected');
   socket.on('disconnect', function() {
     console.log('user disconnected');
@@ -28,12 +29,15 @@ io.on('connection', function(socket) {
     room = data.room;
     socket.join(data.room);
   });
+  socket.on('access token', function(data) {
+    accessToken = data.access_token;
+  });
   socket.on('leave room', function(data) {
     console.log('left '+data.room);
     socket.leave(data.room);
   });
   socket.on('comment', function(msg) {
-    var message = new Comment(msg);
+    var message = new Comment(msg.message);
     console.log(message);
     socket.broadcast.to(room).emit('comment', message);
   });

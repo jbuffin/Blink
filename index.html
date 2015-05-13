@@ -28,6 +28,7 @@
       var socket = io();
       socket.on('connect', function() {
         socket.emit('join room', {room: 'room2'});
+        socket.emit('access token', {access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm'})
       });
       $('form').submit(function() {
         var msg = $('#m').val();
@@ -61,7 +62,7 @@
           comment: msg,
           type: 0,
         };
-        socket.emit('comment', msgObject);
+        socket.emit('comment', {message:msgObject});
         appendMessage(msg);
       }
     </script>
