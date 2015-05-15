@@ -55,7 +55,7 @@
         $('#m').val('');
         return false;
       });
-      socket.on('comment', function(msg) {
+      socket.on('message', function(msg) {
         appendMessage(msg.comment);
       });
       socket.on('disconnect', function(msg) {
@@ -69,7 +69,7 @@
           comment: msg,
           type: 0,
         };
-        socket.emit('comment', {message:msgObject});
+        socket.emit('message', {message:msgObject});
         appendMessage(msg);
       }
     </script>

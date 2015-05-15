@@ -45,14 +45,14 @@ function SetupSockets(Server) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
-    socket.on('comment', function(msg) {
+    socket.on('message', function(msg) {
       var options = {
         uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
         qs: {access_token:accessToken},
         json: msg.message
       };
       Request.post(options, function(error, response, body) {
-        socket.broadcast.to(room).emit('comment', body.data);
+        socket.broadcast.to(room).emit('message', body.data);
       });
     });
   });

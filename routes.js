@@ -14,7 +14,7 @@ function routes(app) {
 
   app.post('/events', function(req, res) {
     if(Utils.checkAuth(req.body.api_key)) {
-      io.to(req.body.room).emit('comment', new Comment(req.body.data));
+      io.to(req.body.room).emit('message', new Comment(req.body.data));
       res.json({OK:true});
     } else {
       res.json({OK:false});
