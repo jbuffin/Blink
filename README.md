@@ -24,7 +24,7 @@ redis-server
 
 Then, start the different node servers with a different port number for each:
 ```
-nodemon index port=3000 redis=localhost:6379
+nodemon blink.js port=3000 redis=localhost:6379
 ```
 
 Open browser to `localhost:3000`
