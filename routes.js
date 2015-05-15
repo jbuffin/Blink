@@ -2,6 +2,7 @@
 function routes(app) {
   var config = require('./config');
   var io = require('socket.io-emitter')(config.redis);
+  var Utils = require('./utils');
 
   var Comment = require('./Comment');
 
@@ -12,7 +13,7 @@ function routes(app) {
   });
 
   app.post('/events', function(req, res) {
-    if(req.body.api_key === config.apiKey) {
+    if(Utils.checkAuth(req.body.api_key)) {
       io.to(req.body.room).emit('comment', new Comment(req.body.data));
       res.json({OK:true});
     } else {
