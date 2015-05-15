@@ -9,6 +9,7 @@ var io = require('socket.io')(Server);
 var config = require('./config');
 var Comment = require('./Comment');
 var Request = require('request');
+var Utils = require('./utils');
 
 var routes = require('./routes')(app);
 
@@ -29,7 +30,7 @@ io.on('connection', function(socket) {
 
   socket.on('authorize', function(data) {
     clearTimeout(authTimeout);
-    authorized = checkAuth(data.api_key);
+    authorized = Utils.checkAuth(data.api_key);
   });
   socket.on('disconnect', function() {
     console.log('user disconnected');
@@ -51,7 +52,7 @@ io.on('connection', function(socket) {
   });
   socket.on('comment', function(msg) {
     var options = {
-      uri: config.winkBaseUrl+'/streams/'+room+'/comments',
+      uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
       qs: {access_token:accessToken},
       json: msg.message
     };
@@ -60,10 +61,6 @@ io.on('connection', function(socket) {
     });
   });
 });
-
-function checkAuth(key) {
-  return key == config.apiKey;
-}
 
 Server.listen(config.port, function() {
   console.log('listening on *:'+config.port);
