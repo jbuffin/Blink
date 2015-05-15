@@ -8,7 +8,7 @@ var Server = http.Server(app);
 var io = require('socket.io')(Server);
 var config = require('./config');
 var Comment = require('./Comment');
-var request = require('request');
+var Request = require('request');
 
 var routes = require('./routes')(app);
 
@@ -55,10 +55,9 @@ io.on('connection', function(socket) {
       qs: {access_token:accessToken},
       json: msg.message
     };
-    request.post(options, function(error, response, body) {
+    Request.post(options, function(error, response, body) {
       socket.broadcast.to(room).emit('comment', body.data);
     });
-
   });
 });
 
