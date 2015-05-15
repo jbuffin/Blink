@@ -18,8 +18,19 @@ if(config.redis) {
 
 io.on('connection', function(socket) {
   var room,
-      accessToken;
+      accessToken,
+      authorized;
   console.log('a user connected');
+
+  // must authorize within 30 seconds
+  var authTimeout = setTimeout(function() {
+    socket.disconnect();
+  }, 30000);
+
+  socket.on('authorize', function(data) {
+    clearTimeout(authTimeout);
+    authorized = checkAuth(data.api_key);
+  });
   socket.on('disconnect', function() {
     console.log('user disconnected');
   });
@@ -50,6 +61,10 @@ io.on('connection', function(socket) {
 
   });
 });
+
+function checkAuth(key) {
+  return key == config.apiKey;
+}
 
 Server.listen(config.port, function() {
   console.log('listening on *:'+config.port);
