@@ -12,8 +12,12 @@ function routes(app) {
   });
 
   app.post('/events', function(req, res) {
-    io.to(req.body.room).emit('comment', new Comment(req.body.data));
-    res.json({response:'OK'});
+    if(req.body.api_key === config.apiKey) {
+      io.to(req.body.room).emit('comment', new Comment(req.body.data));
+      res.json({OK:true});
+    } else {
+      res.json({OK:false});
+    }
   });
 }
 module.exports = routes;
