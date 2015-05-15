@@ -27,13 +27,20 @@
     <script>
       var socket = io();
       socket.on('connect', function() {
+        socket.emit(
+          'authorize',
+          {
+            api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
+          });
         socket.emit('join room', {room: '83n'});
         socket.emit('access token', {access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm'})
+
+        appendMessage('connected');
       });
       $('form').submit(function() {
         var msg = $('#m').val();
         if(msg.indexOf('/') === 0) {
-          var sep = msg.indexOf(' ');
+          var sep = msg.indexOf(' ') != -1 ? msg.indexOf(' ') : msg.length;
           var command = msg.slice(1, sep);
           var opt = msg.slice(sep+1);
           if(command === 'join') {
@@ -50,6 +57,9 @@
       });
       socket.on('comment', function(msg) {
         appendMessage(msg.comment);
+      });
+      socket.on('disconnect', function(msg) {
+        appendMessage('you\'ve been disconnected');
       });
       function appendMessage(msg) {
         $('#messages').append($('<li>').text(msg));
