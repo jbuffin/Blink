@@ -40,7 +40,7 @@ io.on('connection', function(socket) {
   });
   socket.on('comment', function(msg) {
     var options = {
-      uri: 'http://dev-api.winkapp.us/v1/streams/'+room+'/comments',
+      uri: config.winkBaseUrl+'/streams/'+room+'/comments',
       qs: {access_token:accessToken},
       json: msg.message
     };
