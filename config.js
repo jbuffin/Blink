@@ -23,6 +23,7 @@ var config = {
   env: ENV,
   redis: redis,
   apiKey: apiKey,
+  winkBaseUrl: 'http://dev-api.winkapp.us/v1'
 };
 
 module.exports = config;
