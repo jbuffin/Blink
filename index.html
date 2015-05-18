@@ -32,8 +32,10 @@
           {
             api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
           });
-        socket.emit('join room', {room: '83n'});
-        socket.emit('access token', {access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm'})
+        socket.on('authorized', function() {
+          socket.emit('join room', {room: '83n'});
+          socket.emit('access token', {access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm'})
+        });
 
         appendMessage('connected');
       });
