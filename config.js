@@ -1,3 +1,5 @@
+'use strict';
+
 var ENV = 'dev'; // 'dev' | 'stage' | 'prod'
 
 var port = 3000;
