@@ -17,6 +17,9 @@ process.argv.forEach(function(val, index, array) {
   if(val.indexOf('api_key') === 0) {
     apiKey = val.slice(8);
   }
+  if(val.indexOf('ENV') === 0) {
+    ENV = val.slice(4);
+  }
 });
 var config = {
   port: port,
