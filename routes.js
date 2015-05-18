@@ -6,11 +6,13 @@ function routes(app) {
 
   var Comment = require('./Comment');
 
-  app.get('/', function(req, res) {
-    res.sendFile('index.html', {
-      root: __dirname,
+  if(config.env == 'dev') {
+    app.get('/', function(req, res) {
+      res.sendFile('index.html', {
+        root: __dirname,
+      });
     });
-  });
+  }
 
   app.post('/events', function(req, res) {
     if(Utils.checkAuth(req.body.api_key)) {
