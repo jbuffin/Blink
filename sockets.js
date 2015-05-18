@@ -59,7 +59,7 @@ function SetupSockets(Server) {
         var options = {
           uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
           qs: {access_token:accessToken},
-          json: msg.message
+          json: {comment:msg.data.comment}
         };
 
         Request.post(options, function(error, response, body) {

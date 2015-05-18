@@ -58,6 +58,7 @@
         return false;
       });
       socket.on('message', function(msg) {
+        console.log(msg);
         appendMessage(msg.comment);
       });
       socket.on('disconnect', function(msg) {
@@ -68,10 +69,12 @@
       }
       function sendMessage(msg) {
         var msgObject = {
-          comment: msg,
-          type: 0,
+          data: {
+            comment:msg
+          },
+          type: 'comment',
         };
-        socket.emit('message', {message:msgObject});
+        socket.emit('message', msgObject);
         appendMessage(msg);
       }
     </script>
