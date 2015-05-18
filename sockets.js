@@ -2,7 +2,6 @@
 
 var config = require('./config');
 
-var Comment = require('./Comment');
 var Request = require('request');
 var Utils = require('./utils');
 
