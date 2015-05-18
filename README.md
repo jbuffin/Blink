@@ -38,6 +38,7 @@ _Note: Vagrant coming soon_
 Takes JSON of the form:
 ```json
 {
+  "api_key": 'valid api key',
   "room": "room_name",
   "data": DATA_OBJECT
 }
