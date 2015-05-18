@@ -51,15 +51,17 @@ function SetupSockets(Server) {
     });
 
     socket.on('message', function(msg) {
-      var options = {
-        uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
-        qs: {access_token:accessToken},
-        json: msg.message
-      };
+      if(authorized) {
+        var options = {
+          uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
+          qs: {access_token:accessToken},
+          json: msg.message
+        };
 
-      Request.post(options, function(error, response, body) {
-        socket.broadcast.to(room).emit('message', body.data);
-      });
+        Request.post(options, function(error, response, body) {
+          socket.broadcast.to(room).emit('message', body.data);
+        });
+      }
 
     });
 
