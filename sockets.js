@@ -25,9 +25,9 @@ function SetupSockets(Server) {
     }, 30000);
 
     socket.on('authorize', function(data) {
-      clearTimeout(authTimeout);
       authorized = Utils.checkAuth(data.api_key);
       if(authorized) {
+        clearTimeout(authTimeout);
         socket.emit('authorized', 'OK');
       }
     });
