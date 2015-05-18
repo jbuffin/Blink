@@ -27,9 +27,11 @@ function SetupSockets(Server) {
       clearTimeout(authTimeout);
       authorized = Utils.checkAuth(data.api_key);
     });
+
     socket.on('disconnect', function() {
       console.log('user disconnected');
     });
+
     socket.on('join room', function(data) {
       console.log('joined '+data.room);
       if(room) {
@@ -38,24 +40,31 @@ function SetupSockets(Server) {
       room = data.room;
       socket.join(data.room);
     });
+
     socket.on('access token', function(data) {
       accessToken = data.access_token;
     });
+
     socket.on('leave room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
+
     socket.on('message', function(msg) {
       var options = {
         uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
         qs: {access_token:accessToken},
         json: msg.message
       };
+
       Request.post(options, function(error, response, body) {
         socket.broadcast.to(room).emit('message', body.data);
       });
+
     });
+
   });
+
   return io;
 }
 module.exports = SetupSockets;
