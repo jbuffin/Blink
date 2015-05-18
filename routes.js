@@ -1,9 +1,9 @@
 'use strict';
-function routes(app) {
-  var config = require('./config');
-  var io = require('socket.io-emitter')(config.redis);
-  var Utils = require('./utils');
+var config = require('./config');
+var Utils = require('./utils');
 
+function routes(app) {
+  var io = require('socket.io-emitter')(config.redis);
 
   if(config.env == 'dev') {
     app.get('/', function(req, res) {
