@@ -1,6 +1,6 @@
 'use strict';
 var Request = require('request');
-var Utils = require('../utils');
+var Utils = require('./utils');
 
 var messageHandlers = {
   comment: function(opts) {
