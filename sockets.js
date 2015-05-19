@@ -2,8 +2,8 @@
 
 var config = require('./config');
 
-var Request = require('request');
 var Utils = require('./utils');
+var Message = require('./Message');
 
 function SetupSockets(Server) {
 
@@ -56,17 +56,14 @@ function SetupSockets(Server) {
 
     socket.on('message', function(msg) {
       if(authorized) {
-        var options = {
-          uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
-          qs: {access_token:accessToken},
-          json: {comment:msg.data.comment}
+        var handlerOptions = {
+          message: msg,
+          socket: socket,
+          room: room,
+          accessToken: accessToken
         };
-
-        Request.post(options, function(error, response, body) {
-          socket.broadcast.to(room).emit('message', body.data);
-        });
+        Message(handlerOptions).handleMessage();
       }
-
     });
 
   });
