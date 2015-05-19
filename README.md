@@ -34,7 +34,8 @@ Takes JSON of the form:
 {
   "api_key": 'valid api key',
   "room": "room_name",
-  "data": DATA_OBJECT
+  "type": "message_type",
+  "data": MESSAGE_DATA_OBJECT
 }
 ```
 
