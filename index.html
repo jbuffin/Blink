@@ -59,7 +59,7 @@
       });
       socket.on('message', function(msg) {
         console.log(msg);
-        appendMessage(msg.comment);
+        appendMessage(msg.data.comment);
       });
       socket.on('disconnect', function(msg) {
         appendMessage('you\'ve been disconnected');
