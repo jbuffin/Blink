@@ -2,12 +2,6 @@
 
 ## Getting started
 
-If you don't have redis installed, install it:
-```
-brew install redis
-redis-server
-```
-
 ```bash
 npm install -g nodemon
 npm install
