@@ -41,7 +41,6 @@ function SetupSockets(Server) {
       if(room) {
         socket.leave(room);
       }
-      room = data.room;
       socket.join(data.room);
     });
 
