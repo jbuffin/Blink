@@ -11,6 +11,10 @@ function routes(app) {
         root: __dirname,
       });
     });
+  } else {
+    app.get('/', function(req, res) {
+      res.send('<p>Hi there ;)</p>');
+    })
   }
 
   app.post('/events', function(req, res) {
