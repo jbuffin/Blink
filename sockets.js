@@ -58,9 +58,7 @@ function SetupSockets(Server) {
       if(authorized) {
         var handlerOptions = {
           message: msg,
-          socket: socket,
-          room: room,
-          accessToken: accessToken
+          socket: socket
         };
         Message(handlerOptions).handleMessage();
       }
