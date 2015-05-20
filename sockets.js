@@ -14,9 +14,8 @@ function SetupSockets(Server) {
   }
 
   io.on('connection', function(socket) {
-    var room,
-        authorized;
     console.log('a user connected');
+    var authorized;
 
     // must authorize within 30 seconds
     var authTimeout = setTimeout(function() {
@@ -37,9 +36,6 @@ function SetupSockets(Server) {
 
     socket.on('join room', function(data) {
       console.log('joined '+data.room);
-      if(room) {
-        socket.leave(room);
-      }
       socket.join(data.room);
     });
 
