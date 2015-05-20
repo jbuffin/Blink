@@ -15,7 +15,6 @@ function SetupSockets(Server) {
 
   io.on('connection', function(socket) {
     var room,
-        accessToken,
         authorized;
     console.log('a user connected');
 
@@ -48,11 +47,6 @@ function SetupSockets(Server) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
-
-    socket.on('access token', function(data) {
-      accessToken = data.access_token;
-    });
-
 
     socket.on('message', function(msg) {
       if(authorized) {
