@@ -5,6 +5,15 @@ var ENV = 'dev'; // 'dev' | 'stage' | 'prod'
 var port = 3000;
 var redis = null;
 var apiKey = '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf';
+var winkBaseUrl = '';
+switch (ENV) {
+  case 'dev':
+    winkBaseUrl = 'http://dev-api.winkapp.us/v1';
+    break;
+  case 'stage':
+    winkBaseUrl = 'http://stage-api.winkapp.us/v1';
+    break;
+}
 
 process.argv.forEach(function(val, index, array) {
   if(val.indexOf('port') === 0) {
@@ -28,7 +37,7 @@ var config = {
   env: ENV,
   redis: redis,
   apiKey: apiKey,
-  winkBaseUrl: 'http://dev-api.winkapp.us/v1'
+  winkBaseUrl: winkBaseUrl
 };
 
 module.exports = config;
