@@ -44,14 +44,15 @@ function SetupSockets(Server) {
       socket.join(data.room);
     });
 
-    socket.on('access token', function(data) {
-      accessToken = data.access_token;
-    });
-
     socket.on('leave room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
+
+    socket.on('access token', function(data) {
+      accessToken = data.access_token;
+    });
+
 
     socket.on('message', function(msg) {
       if(authorized) {
