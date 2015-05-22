@@ -44,6 +44,10 @@ function SetupSockets(Server) {
       socket.leave(data.room);
     });
 
+    socket.on('start_coanchor_stream', function(data) {
+      Utils.reBroadcast(socket, 'start_coanchor_stream', data);
+    });
+
     socket.on('message', function(msg) {
       if(authorized) {
         var handlerOptions = {
