@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 var Server = require('http').Server(app);
 var config = require('./config');
 
-var routes = require('./routes')(app);
+var routes = require('./routes')(Server, app);
 
 var io = require('./sockets')(Server);
 

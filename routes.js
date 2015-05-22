@@ -2,8 +2,12 @@
 var config = require('./config');
 var Utils = require('./utils');
 
-function routes(app) {
-  var io = require('socket.io-emitter')(config.redis);
+function routes(Server, app) {
+  if (config.redis) {
+    var io = require('socket.io-emitter')(config.redis);
+  } else {
+    var io = require('socket.io')(Server);
+  }
 
   if(config.env == 'dev') {
     app.get('/', function(req, res) {
