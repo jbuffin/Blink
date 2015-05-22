@@ -68,10 +68,10 @@
         var msgObject = {
           data: {
             comment: msg,
-            access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm',
             room: room
           },
-          type: 'comment',
+          access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm',
+          type: 'comment'
         };
         socket.emit('message', msgObject);
         appendMessage(msg);
