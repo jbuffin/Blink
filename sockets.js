@@ -48,6 +48,14 @@ function SetupSockets(Server) {
       Utils.reBroadcast(socket, 'start_coanchor_stream', data);
     });
 
+    socket.on('end_stream', function(data) {
+      Utils.reBroadcast(socket, 'end_stream', data);
+    });
+
+    socket.on('end_coanchor_stream', function(data) {
+      Utils.reBroadcast(socket, 'end_coanchor_stream', data);
+    });
+
     socket.on('message', function(msg) {
       if(authorized) {
         var handlerOptions = {
