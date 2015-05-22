@@ -45,14 +45,17 @@ function SetupSockets(Server) {
     });
 
     socket.on('start_coanchor_stream', function(data) {
+      console.log('start_coanchor_stream');
       Utils.reBroadcast(socket, 'start_coanchor_stream', data);
     });
 
     socket.on('end_stream', function(data) {
+      console.log('end_stream');
       Utils.reBroadcast(socket, 'end_stream', data);
     });
 
     socket.on('end_coanchor_stream', function(data) {
+      console.log('end_coanchor_stream')
       Utils.reBroadcast(socket, 'end_coanchor_stream', data);
     });
 
