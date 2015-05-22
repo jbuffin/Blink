@@ -6,7 +6,7 @@ var messageHandlers = {
   comment: function(opts) {
     var options = {
       uri: Utils.buildWinkUrl('/streams/'+this.message.data.room+'/comments'),
-      qs: {access_token:this.message.data.access_token},
+      qs: {access_token:this.message.access_token},
       json: {comment:this.message.data.comment}
     };
 
