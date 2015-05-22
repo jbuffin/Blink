@@ -3,10 +3,11 @@ var config = require('./config');
 var Utils = require('./utils');
 
 function routes(Server, app) {
+  var io;
   if (config.redis) {
-    var io = require('socket.io-emitter')(config.redis);
+    io = require('socket.io-emitter')(config.redis);
   } else {
-    var io = require('socket.io')(Server);
+    io = require('socket.io')(Server);
   }
 
   if(config.env == 'dev') {
