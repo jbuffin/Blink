@@ -34,7 +34,7 @@
             api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
           });
         socket.on('authorized', function() {
-          socket.emit('join room', {room: room});
+          socket.emit('join_room', {room: room});
         });
 
         appendMessage('connected');
@@ -46,7 +46,7 @@
           var command = msg.slice(1, sep);
           var opt = msg.slice(sep+1);
           if(command === 'join') {
-            socket.emit('join room', {room: opt});
+            socket.emit('join_room', {room: opt});
           }
         } else {
           sendMessage(msg);

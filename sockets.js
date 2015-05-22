@@ -34,12 +34,12 @@ function SetupSockets(Server) {
       console.log('user disconnected');
     });
 
-    socket.on('join room', function(data) {
+    socket.on('join_room', function(data) {
       console.log('joined '+data.room);
       socket.join(data.room);
     });
 
-    socket.on('leave room', function(data) {
+    socket.on('leave_room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
