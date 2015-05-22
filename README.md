@@ -5,7 +5,7 @@
 ```bash
 npm install -g nodemon
 npm install
-nodemon index
+nodemon blink.js port=3000
 ```
 
 If you want to run multiple instances of the socket.io server, you'll need to do the following: 
