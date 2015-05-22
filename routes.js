@@ -2,12 +2,10 @@
 var config = require('./config');
 var Utils = require('./utils');
 
-function routes(Server, app) {
+function routes(app) {
   var io;
   if (config.redis) {
     io = require('socket.io-emitter')(config.redis);
-  } else {
-    io = require('socket.io')(Server);
   }
 
   if(config.env == 'dev') {
@@ -24,8 +22,12 @@ function routes(Server, app) {
 
   app.post('/events', function(req, res) {
     if(Utils.checkAuth(req.body.api_key)) {
-      io.to(req.body.room).emit('message', req.body);
-      res.json({OK:true});
+      if(io) {
+        io.to(req.body.room).emit('message', req.body);
+        res.json({OK:true});
+      } else {
+        res.json({OK:false, message: 'Was not able to find redis'});
+      }
     } else {
       res.json({OK:false});
     }
