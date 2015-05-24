@@ -3,15 +3,22 @@ var Request = require('request');
 var Utils = require('./utils');
 
 var messageHandlers = {
-  comment: function(opts) {
+  comment: function() {
+    var room = this.message.rooms[0],
+        access_token = this.message.access_token,
+        comment = this.message.payload.comment;
+
     var options = {
-      uri: Utils.buildWinkUrl('/streams/'+this.message.data.room+'/comments'),
-      qs: {access_token:this.message.access_token},
-      json: {comment:this.message.data.comment}
+      uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
+      qs: {access_token:access_token},
+      json: {comment:comment}
     };
 
     Request.post(options, function(error, response, body) {
-      this.socket.broadcast.to(this.message.data.room).emit('message', {type:'comment', data:body.data});
+      console.log(body);
+      this.socket.broadcast.to(room).emit(room+'#message', {
+        type:'comment',
+        data: body.data});
     }.bind(this));
   }
 };
@@ -19,7 +26,7 @@ var messageHandlers = {
 function Message(opts) {
   return {
     message: opts.message,
-    handleMessage: messageHandlers[opts.message.type],
+    handle: messageHandlers[opts.message.payload.type],
     socket: opts.socket
   };
 }

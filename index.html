@@ -54,7 +54,7 @@
         $('#m').val('');
         return false;
       });
-      socket.on('message', function(msg) {
+      socket.on(room+'#message', function(msg) {
         console.log(msg);
         appendMessage(msg.data.comment);
       });
@@ -65,15 +65,16 @@
         $('#messages').append($('<li>').text(msg));
       }
       function sendMessage(msg) {
-        var msgObject = {
-          data: {
+        var payload = {
+          event: 'message',
+          rooms: [room],
+          access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
+          payload: {
+            type: 'comment',
             comment: msg,
-            room: room
           },
-          access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm',
-          type: 'comment'
         };
-        socket.emit('message', msgObject);
+        socket.emit('client_event', payload);
         appendMessage(msg);
       }
     </script>

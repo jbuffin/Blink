@@ -23,8 +23,10 @@ function SetupSockets(Server) {
     }, 30000);
 
     socket.on('authorize', function(data) {
+      console.log('authorize');
       authorized = Utils.checkAuth(data.api_key);
       if(authorized) {
+        console.log('authorized');
         clearTimeout(authTimeout);
         socket.emit('authorized', 'OK');
       }
@@ -44,28 +46,31 @@ function SetupSockets(Server) {
       socket.leave(data.room);
     });
 
-    socket.on('start_coanchor_stream', function(data) {
-      console.log('start_coanchor_stream');
-      Utils.reBroadcast(socket, 'start_coanchor_stream', data);
-    });
+    socket.on('client_event', function(message) {
+      console.log(message.event);
 
-    socket.on('end_stream', function(data) {
-      console.log('end_stream');
-      Utils.reBroadcast(socket, 'end_stream', data);
-    });
+      if (! message.rooms) {
+        return false;
+      }
 
-    socket.on('end_coanchor_stream', function(data) {
-      console.log('end_coanchor_stream')
-      Utils.reBroadcast(socket, 'end_coanchor_stream', data);
-    });
+      if (message.event == 'message') {
+        if(authorized) {
+          console.log('authorized');
+          Message({
+            message: message,
+            socket: socket
+          }).handle();
+        }
 
-    socket.on('message', function(msg) {
-      if(authorized) {
-        var handlerOptions = {
-          message: msg,
-          socket: socket
-        };
-        Message(handlerOptions).handleMessage();
+        return;
+      }
+
+      // broadcast the event to every room
+      for (var index in message.rooms) {
+        if (message.rooms.hasOwnProperty(index)) {
+          var room = message.rooms[index];
+          socket.broadcast.to(room).emit(room+'#'+message.event, message.payload);
+        }
       }
     });
 
