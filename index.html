@@ -35,6 +35,7 @@
           access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
           payload: data,
         };
+        console.log('Sending...', payload);
         socket.emit('client_event', payload);
       }
 
@@ -45,7 +46,7 @@
             api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
           });
         socket.on('authorized', function() {
-          socket.emit('join_room', {room: room});
+          socket.emit('blink:join_room', {room: room});
         });
 
         appendMessage('connected');
@@ -77,17 +78,13 @@
       function appendMessage(msg) {
         $('#messages').append($('<li>').text(msg));
       }
+
       function sendMessage(msg) {
-        var payload = {
-          event: 'new_comment',
-          rooms: [room],
-          access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
-          payload: {
-            type: 'comment',
-            comment: msg,
-          },
-        };
-        socket.emit('client_event', payload);
+        emit(room, 'new_comment', {
+          type: 'comment',
+          comment: msg,
+        });
+
         appendMessage(msg);
       }
     </script>
