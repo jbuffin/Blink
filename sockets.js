@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var Utils = require('./utils');
-var Message = require('./Message');
+var Comment = require('./Comment');
 
 function SetupSockets(Server) {
 
@@ -23,8 +23,10 @@ function SetupSockets(Server) {
     }, 30000);
 
     socket.on('authorize', function(data) {
+      console.log('authorize');
       authorized = Utils.checkAuth(data.api_key);
       if(authorized) {
+        console.log('authorized');
         clearTimeout(authTimeout);
         socket.emit('authorized', 'OK');
       }
@@ -34,38 +36,42 @@ function SetupSockets(Server) {
       console.log('user disconnected');
     });
 
-    socket.on('join_room', function(data) {
+    socket.on('blink:join_room', function(data) {
       console.log('joined '+data.room);
       socket.join(data.room);
     });
 
-    socket.on('leave_room', function(data) {
+    socket.on('blink:leave_room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
 
-    socket.on('start_coanchor_stream', function(data) {
-      console.log('start_coanchor_stream');
-      Utils.reBroadcast(socket, 'start_coanchor_stream', data);
-    });
+    socket.on('client_event', function(message) {
+      console.log(message);
 
-    socket.on('end_stream', function(data) {
-      console.log('end_stream');
-      Utils.reBroadcast(socket, 'end_stream', data);
-    });
+      if (! message.rooms) {
+        return false;
+      }
 
-    socket.on('end_coanchor_stream', function(data) {
-      console.log('end_coanchor_stream')
-      Utils.reBroadcast(socket, 'end_coanchor_stream', data);
-    });
+      if (message.event == 'new_comment') {
+        if(authorized) {
+          console.log('authorized');
+          Comment({
+            message: message,
+            socket: socket
+          }).handle();
+        }
 
-    socket.on('message', function(msg) {
-      if(authorized) {
-        var handlerOptions = {
-          message: msg,
-          socket: socket
-        };
-        Message(handlerOptions).handleMessage();
+        return;
+      }
+
+      // broadcast the event to every room
+      for (var index in message.rooms) {
+        if (message.rooms.hasOwnProperty(index)) {
+          var room = message.rooms[index];
+          var clientMessage = Utils.newMessage(room, message.event, message.payload);
+          socket.broadcast.to(room).emit('message', clientMessage);
+        }
       }
     });
 

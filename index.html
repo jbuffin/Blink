@@ -56,7 +56,9 @@
       });
       socket.on('message', function(msg) {
         console.log(msg);
-        appendMessage(msg.data.comment);
+        if (msg.event === 'new_comment') {
+          appendMessage(msg.payload.data.comment);
+        }
       });
       socket.on('disconnect', function(msg) {
         appendMessage('you\'ve been disconnected');
@@ -65,15 +67,16 @@
         $('#messages').append($('<li>').text(msg));
       }
       function sendMessage(msg) {
-        var msgObject = {
-          data: {
+        var payload = {
+          event: 'new_comment',
+          rooms: [room],
+          access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
+          payload: {
+            type: 'comment',
             comment: msg,
-            room: room
           },
-          access_token: '2.9qFtLcNsmn30LTxQBHrTySQkAu39QFOm',
-          type: 'comment'
         };
-        socket.emit('message', msgObject);
+        socket.emit('client_event', payload);
         appendMessage(msg);
       }
     </script>
