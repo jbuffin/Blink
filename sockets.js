@@ -36,18 +36,18 @@ function SetupSockets(Server) {
       console.log('user disconnected');
     });
 
-    socket.on('join_room', function(data) {
+    socket.on('blink:join_room', function(data) {
       console.log('joined '+data.room);
       socket.join(data.room);
     });
 
-    socket.on('leave_room', function(data) {
+    socket.on('blink:leave_room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
     });
 
     socket.on('client_event', function(message) {
-      console.log(message.event);
+      console.log(message);
 
       if (! message.rooms) {
         return false;
