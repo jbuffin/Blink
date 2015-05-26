@@ -10,6 +10,14 @@ module.exports = {
     return key == config.apiKey;
   },
 
+  newMessage: function (room, event, payload) {
+    return {
+      room: room,
+      event: event,
+      payload: payload,
+    }
+  },
+
   reBroadcast: function (socket, event, data) {
     for (var index in socket.rooms) {
       if (socket.rooms.hasOwnProperty(index) && socket.rooms[index] !== socket.id) {

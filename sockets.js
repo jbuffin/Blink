@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var Utils = require('./utils');
-var Message = require('./Message');
+var Comment = require('./Comment');
 
 function SetupSockets(Server) {
 
@@ -53,10 +53,10 @@ function SetupSockets(Server) {
         return false;
       }
 
-      if (message.event == 'message') {
+      if (message.event == 'new_comment') {
         if(authorized) {
           console.log('authorized');
-          Message({
+          Comment({
             message: message,
             socket: socket
           }).handle();
@@ -69,7 +69,8 @@ function SetupSockets(Server) {
       for (var index in message.rooms) {
         if (message.rooms.hasOwnProperty(index)) {
           var room = message.rooms[index];
-          socket.broadcast.to(room).emit(room+'#'+message.event, message.payload);
+          var clientMessage = Utils.newMessage(room, message.event, message.payload);
+          socket.broadcast.to(room).emit('message', clientMessage);
         }
       }
     });

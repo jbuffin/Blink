@@ -2,7 +2,7 @@
 var Request = require('request');
 var Utils = require('./utils');
 
-var messageHandlers = {
+var commentHandlers = {
   comment: function() {
     var room = this.message.rooms[0],
         access_token = this.message.access_token,
@@ -15,10 +15,12 @@ var messageHandlers = {
     };
 
     Request.post(options, function(error, response, body) {
-      console.log(body);
-      this.socket.broadcast.to(room).emit(room+'#message', {
-        type:'comment',
-        data: body.data});
+      var message = Utils.newMessage(room, 'new_comment', {
+        type: 'comment',
+        data: body.data
+      });
+
+      this.socket.broadcast.to(room).emit('message', message);
     }.bind(this));
   }
 };
@@ -26,7 +28,7 @@ var messageHandlers = {
 function Message(opts) {
   return {
     message: opts.message,
-    handle: messageHandlers[opts.message.payload.type],
+    handle: commentHandlers[opts.message.payload.type],
     socket: opts.socket
   };
 }
