@@ -6,7 +6,7 @@ var commentHandlers = {
   comment: function() {
     var room = this.message.rooms[0],
         access_token = this.message.access_token,
-        comment = this.message.payload.message;
+        comment = this.message.payload.comment;
 
     var options = {
       uri: Utils.buildWinkUrl('/streams/'+room+'/comments'),
