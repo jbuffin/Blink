@@ -55,7 +55,6 @@ function SetupSockets(Server) {
 
       if (message.event == 'new_comment') {
         if(authorized) {
-          console.log('authorized');
           Comment({
             message: message,
             socket: socket
