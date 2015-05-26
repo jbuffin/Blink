@@ -27,6 +27,17 @@
     <script>
       window.socket = io();
       var room = '83n'
+
+      window.emit = function(room, event, data) {
+        var payload = {
+          event: event,
+          rooms: [room],
+          access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
+          payload: data,
+        };
+        socket.emit('client_event', payload);
+      }
+
       socket.on('connect', function() {
         socket.emit(
           'authorize',
