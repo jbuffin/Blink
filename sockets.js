@@ -26,7 +26,6 @@ function SetupSockets(Server) {
       console.log('authorize');
       authorized = Utils.checkAuth(data.api_key);
       if(authorized) {
-        console.log('authorized');
         clearTimeout(authTimeout);
         socket.emit('authorized', 'OK');
       }
