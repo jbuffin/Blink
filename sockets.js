@@ -39,11 +39,17 @@ function SetupSockets(Server) {
     socket.on('blink:join_room', function(data) {
       console.log('joined '+data.room);
       socket.join(data.room);
+      if(data.payload) {
+        socket.broadcast.to(data.room).emit('joined_room', data.payload);
+      }
     });
 
     socket.on('blink:leave_room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
+      if(data.payload) {
+        socket.broadcast.to(data.room).emit('left_room', data.payload);
+      }
     });
 
     socket.on('client_event', function(message) {
