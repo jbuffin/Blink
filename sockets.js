@@ -39,7 +39,7 @@ function SetupSockets(Server) {
       console.log('joined '+data.room);
       socket.join(data.room);
       if(data.payload) {
-        socket.broadcast.to(data.room).emit('joined_room', data.payload);
+        socket.broadcast.to(data.room).emit('message', Utils.newMessage(data.room, 'joined_room', data.payload));
       }
     });
 
@@ -47,7 +47,7 @@ function SetupSockets(Server) {
       console.log('left '+data.room);
       socket.leave(data.room);
       if(data.payload) {
-        socket.broadcast.to(data.room).emit('left_room', data.payload);
+        socket.broadcast.to(data.room).emit('message', Utils.newMessage(data.room, 'left_room', data.payload));
       }
     });
 
