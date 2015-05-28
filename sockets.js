@@ -38,17 +38,31 @@ function SetupSockets(Server) {
     socket.on('blink:join_room', function(data) {
       console.log('joined '+data.room);
       socket.join(data.room);
-      if(data.payload) {
-        socket.broadcast.to(data.room).emit('message', Utils.newMessage(data.room, 'joined_room', data.payload));
-      }
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'join_room',
+          },
+          access_token:data.access_token,
+          room:data.room
+        },
+        socket: socket
+      }).handle();
     });
 
     socket.on('blink:leave_room', function(data) {
       console.log('left '+data.room);
       socket.leave(data.room);
-      if(data.payload) {
-        socket.broadcast.to(data.room).emit('message', Utils.newMessage(data.room, 'left_room', data.payload));
-      }
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'leave_room',
+          },
+          access_token:data.access_token,
+          room:data.room
+        },
+        socket: socket
+      }).handle();
     });
 
     socket.on('client_event', function(message) {
