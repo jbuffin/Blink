@@ -63,6 +63,9 @@
           if(command === 'join') {
             socket.emit('blink:join_room', {room: opt, access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'});
           }
+          if(command === 'leave') {
+            socket.emit('blink:leave_room', {room: opt, access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'});
+          }
         } else {
           sendMessage(msg);
         }
