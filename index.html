@@ -32,7 +32,7 @@
         var payload = {
           event: event,
           rooms: [room],
-          access_token: '2.6jXaullZZZChqgSEnt18XFINXgZgbHEA',
+          access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP',
           payload: data,
         };
         console.log('Sending...', payload);
@@ -48,7 +48,7 @@
         socket.on('authorized', function() {
           socket.emit('blink:join_room', {
             room: room,
-            payload: {user:{username: "eric", name: "Eric Bockmuller", score: 20, avatar: "http://lorempixel.com:80/128/128/people/"+Math.floor((Math.random() * 10) + 1)}}
+            access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'
           });
         });
 
@@ -61,7 +61,7 @@
           var command = msg.slice(1, sep);
           var opt = msg.slice(sep+1);
           if(command === 'join') {
-            socket.emit('join_room', {room: opt});
+            socket.emit('blink:join_room', {room: opt, access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'});
           }
         } else {
           sendMessage(msg);
