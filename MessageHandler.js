@@ -46,7 +46,6 @@ var commentHandlers = {
       json: {status:false}
     };
     Request.put(options, function(error, response, body) {
-      console.log(body.data);
       this.socket.broadcast.to(room).emit('message', Utils.newMessage(room, 'left_room', body.data));
     }.bind(this));
   }
