@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var Utils = require('./utils');
-var Comment = require('./Comment');
+var MessageHandler = require('./MessageHandler');
 
 function SetupSockets(Server) {
 
@@ -60,7 +60,7 @@ function SetupSockets(Server) {
 
       if (message.event == 'new_comment') {
         if(authorized) {
-          Comment({
+          MessageHandler({
             message: message,
             socket: socket
           }).handle();
