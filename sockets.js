@@ -82,7 +82,7 @@ function joinRoom(data) {
     MessageHandler({
       message: {
         payload: {
-          type: 'join_room',
+          type: 'join_room'
         },
         access_token:data.access_token,
         room: room
@@ -103,7 +103,7 @@ function leaveRoom(data) {
     MessageHandler({
       message: {
         payload: {
-          type: 'leave_room',
+          type: 'leave_room'
         },
         access_token: data.access_token,
         room: room
