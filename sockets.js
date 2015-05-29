@@ -72,6 +72,7 @@ function SetupSockets(Server) {
 }
 
 function joinRoom(data) {
+  console.log('joining ', data.room);
   var room = data.room;
   var silent = false;
   if(room.indexOf('presence-') >= 0) {
@@ -93,6 +94,7 @@ function joinRoom(data) {
 }
 
 function leaveRoom(data) {
+  console.log('joining ', data.room);
   var room = data.room;
   var silent = false;
   if(room.indexOf('presence-') >= 0) {
