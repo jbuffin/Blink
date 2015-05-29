@@ -33,8 +33,10 @@ var commentHandlers = {
       json: {status:true}
     };
     Request.put(options, function(error, response, body) {
-      this.socket.broadcast.to(room).emit('message', Utils.newMessage(room, 'joined_room', body.data));
-      this.socket.to('presence-'+room).emit('message', Utils.newMessage('presence-'+room, 'joined_room', body.data));
+      if(body.ok) {
+        this.socket.broadcast.to(room).emit('message', Utils.newMessage(room, 'joined_room', body.data));
+        this.socket.to('presence-'+room).emit('message', Utils.newMessage('presence-'+room, 'joined_room', body.data));
+      }
     }.bind(this));
   },
   'leave_room': function() {
@@ -47,8 +49,10 @@ var commentHandlers = {
       json: {status:false}
     };
     Request.put(options, function(error, response, body) {
-      this.socket.broadcast.to(room).emit('message', Utils.newMessage(room, 'left_room', body.data));
-      this.socket.broadcast.to('presence-'+room).emit('message', Utils.newMessage('presence-'+room, 'left_room', body.data));
+      if(body.ok) {
+        this.socket.broadcast.to(room).emit('message', Utils.newMessage(room, 'left_room', body.data));
+        this.socket.broadcast.to('presence-'+room).emit('message', Utils.newMessage('presence-'+room, 'left_room', body.data));
+      }
     }.bind(this));
   }
 };
