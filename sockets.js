@@ -35,23 +35,8 @@ function SetupSockets(Server) {
       console.log('user disconnected');
     });
 
-    socket.on('blink:join_room', function(data) {
-      console.log('joined '+data.room);
-      joinRoom(socket, data);
-    });
-
-    socket.on('blink:leave_room', function(data) {
-      console.log('left '+data.room);
-      leaveRoom(socket, data);
-    });
-
-    socket.on('blink:listen_room', function(data) {
-      joinRoom(socket, data, true);
-    });
-
-    socket.on('blink:unlisten_room', function(data) {
-      leaveRoom(socket, data, true);
-    });
+    socket.on('blink:join_room', joinRoom.bind(socket));
+    socket.on('blink:leave_room', leaveRoom.bind(socket));
 
     socket.on('client_event', function(message) {
       console.log(message);
@@ -86,8 +71,13 @@ function SetupSockets(Server) {
   return io;
 }
 
-function joinRoom(socket, data, silent) {
-  socket.join(data.room);
+function joinRoom(data) {
+  var room = data.room;
+  var silent = false;
+  if(room.indexOf('presence-') >= 0) {
+    silent = true;
+  }
+  this.join(room);
   if(!silent) {
     MessageHandler({
       message: {
@@ -95,25 +85,30 @@ function joinRoom(socket, data, silent) {
           type: 'join_room',
         },
         access_token:data.access_token,
-        room:data.room
+        room: room
       },
-      socket: socket
+      socket: this
     }).handle();
   }
 }
 
-function leaveRoom(socket, data, silent) {
-  socket.leave(data.room);
+function leaveRoom(data) {
+  var room = data.room;
+  var silent = false;
+  if(room.indexOf('presence-') >= 0) {
+    silent = true;
+  }
+  this.leave(room);
   if(!silent) {
     MessageHandler({
       message: {
         payload: {
           type: 'leave_room',
         },
-        access_token:data.access_token,
-        room:data.room
+        access_token: data.access_token,
+        room: room
       },
-      socket: socket
+      socket: this
     }).handle();
   }
 }
