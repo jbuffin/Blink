@@ -46,10 +46,12 @@
             api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
           });
         socket.on('authorized', function() {
-          socket.emit('blink:join_room', {
+          var msg = {
             room: room,
             access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'
-          });
+          };
+          console.log('authorized, joining', msg);
+          socket.emit('blink:join_room', msg);
         });
 
         appendMessage('connected');
@@ -61,9 +63,11 @@
           var command = msg.slice(1, sep);
           var opt = msg.slice(sep+1);
           if(command === 'join') {
+            console.log('joining', opt);
             socket.emit('blink:join_room', {room: opt, access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'});
           }
           if(command === 'leave') {
+            console.log('leaving ', opt);
             socket.emit('blink:leave_room', {room: opt, access_token: '3.idbNB23afch1GlTzQtxriereWB1RHVgP'});
           }
         } else {

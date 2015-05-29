@@ -72,46 +72,45 @@ function SetupSockets(Server) {
 }
 
 function joinRoom(data) {
-  console.log('joining ', data.room);
+  console.log('joining', data.room);
   var room = data.room;
-  var silent = false;
-  if(room.indexOf('presence-') >= 0) {
-    silent = true;
-  }
-  this.join(room);
-  if(!silent) {
-    MessageHandler({
-      message: {
-        payload: {
-          type: 'join_room'
+  if(room) {
+    var silent = (room.indexOf('presence-') == 0);
+    this.join(room);
+    if(!silent) {
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'join_room'
+          },
+          access_token:data.access_token,
+          room: room
         },
-        access_token:data.access_token,
-        room: room
-      },
-      socket: this
-    }).handle();
+        socket: this
+      }).handle();
+    }
   }
 }
 
 function leaveRoom(data) {
-  console.log('joining ', data.room);
+  console.log('leaving', data.room);
   var room = data.room;
   var silent = false;
-  if(room.indexOf('presence-') >= 0) {
-    silent = true;
-  }
-  this.leave(room);
-  if(!silent) {
-    MessageHandler({
-      message: {
-        payload: {
-          type: 'leave_room'
+  if(room) {
+    var silent = (room.indexOf('presence-') == 0);
+    this.leave(room);
+    if(!silent) {
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'leave_room'
+          },
+          access_token: data.access_token,
+          room: room
         },
-        access_token: data.access_token,
-        room: room
-      },
-      socket: this
-    }).handle();
+        socket: this
+      }).handle();
+    }
   }
 }
 
