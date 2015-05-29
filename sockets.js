@@ -97,4 +97,37 @@ function SetupSockets(Server) {
 
   return io;
 }
+
+function joinRoom(socket, data, silent) {
+  socket.join(data.room);
+  if(!silent) {
+    MessageHandler({
+      message: {
+        payload: {
+          type: 'join_room',
+        },
+        access_token:data.access_token,
+        room:data.room
+      },
+      socket: socket
+    }).handle();
+  }
+}
+
+function leaveRoom(socket, data, silent) {
+  socket.leave(data.room);
+  if(!silent) {
+    MessageHandler({
+      message: {
+        payload: {
+          type: 'leave_room',
+        },
+        access_token:data.access_token,
+        room:data.room
+      },
+      socket: socket
+    }).handle();
+  }
+}
+
 module.exports = SetupSockets;
