@@ -5,7 +5,7 @@ var ENV = Constants.ENV.DEV;
 var port = 3000;
 var redis = null;
 var apiKey = '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf';
-var winkBaseUrl = '';
+var winkBaseUrl = Constants.WINKBASE.DEV;
 process.argv.forEach(function(val, index, array) {
   if(val.indexOf('port') === 0) {
     port = val.slice(5);
@@ -29,13 +29,16 @@ process.argv.forEach(function(val, index, array) {
 
 switch (ENV) {
   case Constants.ENV.DEV:
-    winkBaseUrl = 'http://dev-api.winkapp.us/v1';
+    winkBaseUrl = Constants.WINKBASE.DEV;
     break;
   case Constants.ENV.STAGE:
-    winkBaseUrl = 'http://stage-api.winkapp.us/v1';
+    winkBaseUrl = Constants.WINKBASE.STAGE;
     break;
   case Constants.ENV.PROD:
-    winkBaseUrl = 'https://api.winkapp.us/v1';
+    winkBaseUrl = Constants.WINKBASE.PROD;
+    break;
+  default:
+    // no-op
 }
 
 var config = {
