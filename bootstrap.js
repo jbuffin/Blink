@@ -14,7 +14,7 @@ function routes(app) {
     emitter = require('socket.io-emitter')(config.redis);
   }
 
-  if(config.env == 'dev') {
+  if(config.isDev()) {
     app.get('/', function(req, res) {
       res.sendFile('testpage.html', {
         root: __dirname,
