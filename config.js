@@ -43,7 +43,17 @@ var config = {
   env: ENV,
   redis: redis,
   apiKey: apiKey,
-  winkBaseUrl: winkBaseUrl
+  winkBaseUrl: winkBaseUrl,
+  isDev: function() {return this.isEnv(Constants.ENV.DEV);},
+  isStage: function() {return this.isEnv(Constants.ENV.DEV);},
+  isProd: function() {return this.isEnv(Constants.ENV.PROD);},
+  isEnv: function(env) {
+    if(Constants.ENV[env]) {
+      return this.env == Constants.ENV[env];
+    } else {
+      return false;
+    }
+  }
 };
 
 module.exports = config;
