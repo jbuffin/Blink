@@ -1,8 +1,8 @@
 var constants = {
   ENV: {
-    DEV: 'dev',
-    STAGE: 'stage',
-    PROD: 'prod'
+    DEV: 'DEV',
+    STAGE: 'STAGE',
+    PROD: 'PROD'
   }
 };
 module.exports = constants;
