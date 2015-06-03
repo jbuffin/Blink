@@ -1,7 +1,7 @@
 'use strict';
+var Constants = require('./Constants');
 
-var ENV = 'dev'; // 'dev' | 'stage' | 'prod'
-
+var ENV = Constants.ENV.DEV;
 var port = 3000;
 var redis = null;
 var apiKey = '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf';
@@ -20,17 +20,22 @@ process.argv.forEach(function(val, index, array) {
     apiKey = val.slice(8);
   }
   if(val.indexOf('ENV') === 0) {
-    ENV = val.slice(4);
+    var envInput = val.slice(4);
+    if(envInput && Constants.ENV[envInput]) {
+      ENV = Constants.ENV[envInput];
+    }
   }
 });
 
 switch (ENV) {
-  case 'dev':
+  case Constants.ENV.DEV:
     winkBaseUrl = 'http://dev-api.winkapp.us/v1';
     break;
-  case 'stage':
+  case Constants.ENV.STAGE:
     winkBaseUrl = 'http://stage-api.winkapp.us/v1';
     break;
+  case Constants.ENV.PROD:
+    winkBaseUrl = 'https://api.winkapp.us/v1';
 }
 
 var config = {
