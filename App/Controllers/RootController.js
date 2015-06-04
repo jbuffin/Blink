@@ -4,7 +4,7 @@ var config = require('../../config');
 var RootController = function() {
   // no-op
 };
-RootController.prototype.getHomePage = function(req, res) {
+RootController.prototype.getHomePage = function getHomePage(req, res) {
   if(config.isDev()) {
     res.sendFile(path.resolve('testpage.html'));
   } else {
