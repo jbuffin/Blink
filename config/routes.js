@@ -1,12 +1,9 @@
 'use strict';
 var Controllers = require('../App/Controllers');
 var routes = {
-  init: function routesInit(app, emitter) {
+  init: function routesInit(app) {
     app.get('/', Controllers.RootController.getHomePage);
-
-    app.post('/events', function(req, res) {
-      Controllers.EventsController.handleIncomingEvent(req, res, emitter);
-    });
+    app.post('/events', Controllers.EventsController.handleIncomingEvent);
   }
 }
 module.exports = routes;

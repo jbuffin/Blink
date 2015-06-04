@@ -8,12 +8,8 @@ function bootstrap(app) {
 
   var Server = require('http').Server(app);
   var Blink = require('./Blink').listen(Server);
-  var emitter;
-  if (config.redis) {
-    emitter = require('socket.io-emitter')(config.redis);
-  }
 
-  routes.init(app, emitter);
+  routes.init(app);
 
   Server.listen(config.port, function() {
     console.log('listening on *:'+config.port);
