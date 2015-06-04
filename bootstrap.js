@@ -2,7 +2,6 @@
 var bodyParser = require('body-parser');
 var config = require('./config');
 var routes = require('./config/routes');
-var Blink = require('./Blink');
 
 function bootstrap(app) {
   app.use(bodyParser.json());

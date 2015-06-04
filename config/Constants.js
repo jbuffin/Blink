@@ -1,3 +1,5 @@
+'use strict';
+
 var constants = {
   ENV: {
     DEV: 'DEV',

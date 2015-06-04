@@ -1,3 +1,4 @@
+'use strict';
 var Controllers = require('../App/Controllers');
 var routes = {
   init: function(app, emitter) {
