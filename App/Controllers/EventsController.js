@@ -1,9 +1,10 @@
 'use strict';
 var Utils = require('../../utils');
+var emitter = require('../../Blink').emitter;
 var EventsController = function EventsControllerConstructor() {
 
 };
-EventsController.prototype.handleIncomingEvent = function handleIncomingEvent(req, res, emitter) {
+EventsController.prototype.handleIncomingEvent = function handleIncomingEvent(req, res) {
   if(Utils.checkAuth(req.body.api_key)) {
     if(emitter) {
       emitter.to(req.body.room).emit('message', req.body);
