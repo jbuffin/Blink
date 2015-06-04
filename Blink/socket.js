@@ -100,7 +100,7 @@ function authorize() {
     this.authorized = Utils.checkAuth(data.api_key);
     if(this.authorized) {
       clearTimeout(authTimeout);
-      this.socket.emit('authorized', 'OK');
+      this.socket.emit('authorized', Utils.buildResponseJson(true));
     }
   }.bind(this));
 }
