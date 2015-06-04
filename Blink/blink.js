@@ -23,6 +23,7 @@ Blink.prototype.newSocket = function newSocket(socket) {
   var newSocket = new Socket(socket);
   var index = this.sockets.push(newSocket)-1;
   newSocket.on('disconnect', function() {
+    console.log('user disconnected');
     this.sockets.splice(index, 1);
   }.bind(this));
 };

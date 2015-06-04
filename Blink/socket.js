@@ -22,9 +22,6 @@ var Socket = function SocketConstructor(socket) {
     }
   }.bind(this));
 
-  this.socket.on('disconnect', function() {
-    console.log('user disconnected');
-  });
 
   this.socket.on('blink:join_room', joinRoom.bind(this.socket));
   this.socket.on('blink:leave_room', leaveRoom.bind(this.socket));
