@@ -43,6 +43,7 @@ var Socket = function SocketConstructor(socket) {
 
 Socket.prototype.on = function on(event, callback) {
   this.socket.on(event, callback);
+  return this;
 };
 
 Socket.prototype.joinRoom = function joinRoom(data) {
@@ -64,6 +65,7 @@ Socket.prototype.joinRoom = function joinRoom(data) {
       }).handle();
     }
   }
+  return this;
 };
 
 Socket.prototype.leaveRoom = function leaveRoom(data) {
@@ -86,6 +88,7 @@ Socket.prototype.leaveRoom = function leaveRoom(data) {
       }).handle();
     }
   }
+  return this;
 };
 
 module.exports = Socket;
