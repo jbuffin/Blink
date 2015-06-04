@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var Utils = require('./utils');
-var MessageHandler = require('./MessageHandler');
+var MessageHandler = require('./Blink/MessageHandler');
 
 function SetupSockets(Server) {
 
