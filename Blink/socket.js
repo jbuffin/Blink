@@ -93,6 +93,12 @@ module.exports = Socket;
 function authorize() {
   // must authorize within 30 seconds
   var authTimeout = setTimeout(function() {
+    this.socket.emit(
+      'not_authorized',
+      Utils.buildResponseJson(
+        false,
+        'Must authorize within 30 seconds'));
+
     this.socket.disconnect();
   }.bind(this), 30000);
 
