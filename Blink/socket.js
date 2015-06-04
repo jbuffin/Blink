@@ -24,7 +24,7 @@ var Socket = function SocketConstructor(socket) {
 
   this.socket.on('disconnect', function() {
     console.log('user disconnected');
-  }.bind(this));
+  });
 
   this.socket.on('blink:join_room', joinRoom.bind(this.socket));
   this.socket.on('blink:leave_room', leaveRoom.bind(this.socket));
@@ -56,6 +56,10 @@ var Socket = function SocketConstructor(socket) {
       }
     }
   }.bind(this));
+};
+
+Socket.prototype.on = function on(event, callback) {
+  this.socket.on(event, callback);
 };
 
 module.exports = Socket;
