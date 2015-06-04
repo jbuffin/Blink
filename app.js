@@ -1,4 +1,3 @@
 'use strict';
-var app = require('express')();
 
-var Server = require('./bootstrap')(app);
+var Server = require('./bootstrap')(require('express')());

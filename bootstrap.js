@@ -15,6 +15,9 @@ function bootstrap(app) {
     console.log('listening on *:'+config.port);
   });
 
-  return Server;
+  return {
+    Server: Server,
+    Blink: Blink
+  };
 }
 module.exports = bootstrap;
