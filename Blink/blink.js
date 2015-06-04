@@ -1,6 +1,4 @@
-var Blink = {
-  init: function() {
+var Blink = function Blink() {
 
-  }
 };
-module.exports = Blink;
+module.exports = new Blink();
