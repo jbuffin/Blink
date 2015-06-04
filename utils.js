@@ -27,9 +27,12 @@ module.exports = {
   },
 
   buildResponseJson: function buildResponseJson(ok, message) {
-    return {
-      ok: ok == true,
-      message: message
+    var response = {
+      ok: ok == true
     };
+    if(message) {
+      response.message = message;
+    }
+    return response;
   }
 };
