@@ -10,7 +10,7 @@ module.exports = {
     return key == config.apiKey;
   },
 
-  newMessage: function(room, event, payload) {
+  newMessage: function newMessage(room, event, payload) {
     return {
       room: room,
       event: event,
@@ -18,7 +18,7 @@ module.exports = {
     }
   },
 
-  reBroadcast: function(socket, event, data) {
+  reBroadcast: function reBroadcast(socket, event, data) {
     for (var index in socket.rooms) {
       if (socket.rooms.hasOwnProperty(index) && socket.rooms[index] !== socket.id) {
         socket.broadcast.to(socket.rooms[index]).emit(event, data);
@@ -26,7 +26,7 @@ module.exports = {
     }
   },
 
-  buildResponseJson: function(ok, message) {
+  buildResponseJson: function buildResponseJson(ok, message) {
     return {
       ok: ok == true,
       message: message

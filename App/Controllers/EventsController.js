@@ -1,6 +1,6 @@
 'use strict';
 var Utils = require('../../utils');
-var EventsController = function() {
+var EventsController = function EventsControllerConstructor() {
 
 };
 EventsController.prototype.handleIncomingEvent = function handleIncomingEvent(req, res, emitter) {

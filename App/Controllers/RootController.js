@@ -2,7 +2,7 @@
 var path = require('path');
 var config = require('../../config');
 
-var RootController = function() {
+var RootController = function RootControllerConstructor() {
   // no-op
 };
 RootController.prototype.getHomePage = function getHomePage(req, res) {

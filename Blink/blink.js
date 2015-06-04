@@ -1,5 +1,5 @@
 'use strict';
-var Blink = function Blink() {
+var Blink = function BlinkConstructor() {
 
 };
 module.exports = new Blink();
