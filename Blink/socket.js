@@ -9,37 +9,36 @@ var Socket = function SocketConstructor(socket) {
   this.authorized = false;
   authorize.call(this);
 
-  this.on('blink:join_room', this.joinRoom.bind(this));
-  this.on('blink:leave_room', this.leaveRoom.bind(this));
+  this.on('blink:join_room', this.joinRoom.bind(this))
+      .on('blink:leave_room', this.leaveRoom.bind(this))
+      .on('client_event', function(message) {
+        console.log(message);
 
-  this.on('client_event', function(message) {
-    console.log(message);
+        if (! message.rooms) {
+          return false;
+        }
 
-    if (! message.rooms) {
-      return false;
-    }
+        if (message.event == 'new_comment') {
+          if(this.authorized) {
+            MessageHandler({
+              message: message,
+              socket: this.socket
+            }).handle();
+          }
 
-    if (message.event == 'new_comment') {
-      if(this.authorized) {
-        MessageHandler({
-          message: message,
-          socket: this.socket
-        }).handle();
-      }
+          return;
+        }
 
-      return;
-    }
-
-    // broadcast the event to every room
-    for (var index in message.rooms) {
-      if (message.rooms.hasOwnProperty(index)) {
-        var room = message.rooms[index];
-        var clientMessage = Utils.newMessage(room, message.event, message.payload);
-        this.socket.broadcast.to(room).emit('message', clientMessage);
-      }
-    }
-  }.bind(this));
-};
+        // broadcast the event to every room
+        for (var index in message.rooms) {
+          if (message.rooms.hasOwnProperty(index)) {
+            var room = message.rooms[index];
+            var clientMessage = Utils.newMessage(room, message.event, message.payload);
+            this.socket.broadcast.to(room).emit('message', clientMessage);
+          }
+        }
+      }.bind(this));
+  };
 
 Socket.prototype.on = function on(event, callback) {
   this.socket.on(event, callback);
