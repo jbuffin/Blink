@@ -6,27 +6,13 @@ var Socket = function SocketConstructor(socket) {
   this.socket = socket;
 
   console.log('a user connected');
-  this.authorized;
+  this.authorized = false;
+  authorize.call(this);
 
-  // must authorize within 30 seconds
-  var authTimeout = setTimeout(function() {
-    this.socket.disconnect();
-  }.bind(this), 30000);
+  this.on('blink:join_room', this.joinRoom.bind(this));
+  this.on('blink:leave_room', this.leaveRoom.bind(this));
 
-  this.socket.on('authorize', function(data) {
-    console.log('authorize');
-    this.authorized = Utils.checkAuth(data.api_key);
-    if(this.authorized) {
-      clearTimeout(authTimeout);
-      this.socket.emit('authorized', 'OK');
-    }
-  }.bind(this));
-
-
-  this.socket.on('blink:join_room', joinRoom.bind(this.socket));
-  this.socket.on('blink:leave_room', leaveRoom.bind(this.socket));
-
-  this.socket.on('client_event', function(message) {
+  this.on('client_event', function(message) {
     console.log(message);
 
     if (! message.rooms) {
@@ -59,14 +45,12 @@ Socket.prototype.on = function on(event, callback) {
   this.socket.on(event, callback);
 };
 
-module.exports = Socket;
-
-function joinRoom(data) {
+Socket.prototype.joinRoom = function joinRoom(data) {
   console.log('joining', data.room);
   var room = data.room;
   if(room) {
     var silent = (room.indexOf('presence-') == 0);
-    this.join(room);
+    this.socket.join(room);
     if(!silent) {
       MessageHandler({
         message: {
@@ -76,19 +60,19 @@ function joinRoom(data) {
           access_token:data.access_token,
           room: room
         },
-        socket: this
+        socket: this.socket
       }).handle();
     }
   }
-}
+};
 
-function leaveRoom(data) {
+Socket.prototype.leaveRoom = function leaveRoom(data) {
   console.log('leaving', data.room);
   var room = data.room;
   var silent = false;
   if(room) {
     var silent = (room.indexOf('presence-') == 0);
-    this.leave(room);
+    this.socket.leave(room);
     if(!silent) {
       MessageHandler({
         message: {
@@ -98,8 +82,25 @@ function leaveRoom(data) {
           access_token: data.access_token,
           room: room
         },
-        socket: this
+        socket: this.socket
       }).handle();
     }
   }
+};
+
+module.exports = Socket;
+
+function authorize() {
+  // must authorize within 30 seconds
+  var authTimeout = setTimeout(function() {
+    this.socket.disconnect();
+  }.bind(this), 30000);
+
+  this.on('authorize', function(data) {
+    this.authorized = Utils.checkAuth(data.api_key);
+    if(this.authorized) {
+      clearTimeout(authTimeout);
+      this.socket.emit('authorized', 'OK');
+    }
+  }.bind(this));
 }
