@@ -4,10 +4,10 @@ var config = require('./config');
 var Utils = require('./utils');
 var Blink = require('./Blink');
 
-function routes(app) {
-  var Server = require('http').Server(app);
+function bootstrap(app) {
   app.use(bodyParser.json());
 
+  var Server = require('http').Server(app);
   var io = require('./sockets')(Server);
   var emitter;
   if (config.redis) {
@@ -45,4 +45,4 @@ function routes(app) {
 
   return Server;
 }
-module.exports = routes;
+module.exports = bootstrap;
