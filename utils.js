@@ -28,7 +28,7 @@ module.exports = {
 
   buildResponseJson: function(ok, message) {
     return {
-      ok: ok,
+      ok: ok == true,
       message: message
     };
   }
