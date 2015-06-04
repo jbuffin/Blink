@@ -7,7 +7,7 @@ function bootstrap(app) {
   app.use(bodyParser.json());
 
   var Server = require('http').Server(app);
-  var io = require('./sockets')(Server);
+  var Blink = require('./Blink').listen(Server);
   var emitter;
   if (config.redis) {
     emitter = require('socket.io-emitter')(config.redis);

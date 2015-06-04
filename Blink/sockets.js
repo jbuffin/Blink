@@ -1,9 +1,9 @@
 'use strict';
 
-var config = require('./config');
+var config = require('../config');
 
-var Utils = require('./utils');
-var MessageHandler = require('./Blink/MessageHandler');
+var Utils = require('../utils');
+var MessageHandler = require('./MessageHandler');
 
 function SetupSockets(Server) {
 
