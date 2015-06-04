@@ -1,0 +1,104 @@
+'use strict';
+var Utils = require('../utils');
+var MessageHandler = require('./MessageHandler');
+
+var Socket = function SocketConstructor(socket) {
+  this.socket = socket;
+
+  console.log('a user connected');
+  this.authorized;
+
+  // must authorize within 30 seconds
+  var authTimeout = setTimeout(function() {
+    this.socket.disconnect();
+  }.bind(this), 30000);
+
+  this.socket.on('authorize', function(data) {
+    console.log('authorize');
+    this.authorized = Utils.checkAuth(data.api_key);
+    if(this.authorized) {
+      clearTimeout(authTimeout);
+      this.socket.emit('authorized', 'OK');
+    }
+  }.bind(this));
+
+  this.socket.on('disconnect', function() {
+    console.log('user disconnected');
+  }.bind(this));
+
+  this.socket.on('blink:join_room', joinRoom.bind(this.socket));
+  this.socket.on('blink:leave_room', leaveRoom.bind(this.socket));
+
+  this.socket.on('client_event', function(message) {
+    console.log(message);
+
+    if (! message.rooms) {
+      return false;
+    }
+
+    if (message.event == 'new_comment') {
+      if(this.authorized) {
+        MessageHandler({
+          message: message,
+          socket: this.socket
+        }).handle();
+      }
+
+      return;
+    }
+
+    // broadcast the event to every room
+    for (var index in message.rooms) {
+      if (message.rooms.hasOwnProperty(index)) {
+        var room = message.rooms[index];
+        var clientMessage = Utils.newMessage(room, message.event, message.payload);
+        this.socket.broadcast.to(room).emit('message', clientMessage);
+      }
+    }
+  }.bind(this));
+};
+
+module.exports = Socket;
+
+function joinRoom(data) {
+  console.log('joining', data.room);
+  var room = data.room;
+  if(room) {
+    var silent = (room.indexOf('presence-') == 0);
+    this.join(room);
+    if(!silent) {
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'join_room'
+          },
+          access_token:data.access_token,
+          room: room
+        },
+        socket: this
+      }).handle();
+    }
+  }
+}
+
+function leaveRoom(data) {
+  console.log('leaving', data.room);
+  var room = data.room;
+  var silent = false;
+  if(room) {
+    var silent = (room.indexOf('presence-') == 0);
+    this.leave(room);
+    if(!silent) {
+      MessageHandler({
+        message: {
+          payload: {
+            type: 'leave_room'
+          },
+          access_token: data.access_token,
+          room: room
+        },
+        socket: this
+      }).handle();
+    }
+  }
+}
