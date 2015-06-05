@@ -5,7 +5,7 @@
 ```bash
 npm install -g nodemon
 npm install
-nodemon blink.js port=3000
+nodemon app.js port=3000
 ```
 
 If you want to run multiple instances of the socket.io server, you'll need to do the following: 
@@ -18,7 +18,7 @@ redis-server
 
 Then, start the different node servers with a different port number for each:
 ```
-nodemon blink.js port=3000 redis=localhost:6379
+nodemon app.js port=3000 redis=localhost:6379
 ```
 
 Open browser to `localhost:3000`
