@@ -12,12 +12,7 @@ var Socket = function SocketConstructor(socket) {
   this.on('blink:join_room', this.joinRoom.bind(this))
       .on('blink:leave_room', this.leaveRoom.bind(this))
       .on('client_event', function(message) {
-        console.log(message);
-
-        if (! message.rooms) {
-          return false;
-        }
-        if(this.authorized) {
+        if(message.rooms && message.rooms.length && this.authorized) {
           new MessageHandler({
             message: message,
             socket: this
