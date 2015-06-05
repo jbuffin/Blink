@@ -6,15 +6,17 @@ var EventsController = function EventsControllerConstructor() {
 };
 
 EventsController.prototype.handleIncomingEvent = function handleIncomingEvent(req, res) {
+  var response,
+      success = false;
   if(Utils.checkAuth(req.body.api_key)) {
-    if(Blink.externalMessage(req.body)) {
-      res.json(Utils.buildResponseJson(true));
-    } else {
-      res.json(Utils.buildResponseJson(false, 'Was not able to find redis'));
+    success = Blink.externalMessage(req.body);
+    if(!success) {
+      response = 'Was not able to process the message';
     }
   } else {
-    res.json(Utils.buildResponseJson(false, 'Invalid API Key'));
+     response = 'Invalid API Key';
   }
+  res.json(Utils.buildResponseJson(success, response));
 };
 
 module.exports = new EventsController();
