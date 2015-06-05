@@ -53,10 +53,6 @@ var messageHandlers = {
   }
 };
 
-function defaultHandler() {
-  // noop
-}
-
 function MessageHandler(opts) {
   this.message = opts.message;
   this.handle = (messageHandlers[opts.message.payload.type] || defaultHandler);
@@ -65,6 +61,14 @@ function MessageHandler(opts) {
   this.access_token = opts.message.access_token;
 }
 module.exports = MessageHandler;
+
+function defaultHandler() {
+  // broadcast the event to every room
+  this.rooms.forEach(function(room) {
+    var clientMessage = Utils.newMessage(room, this.message.event, message.payload);
+    this.socket.socket.broadcast.to(room).emit('message', clientMessage);
+  }.bind(this));
+}
 
 function request(options) {
   var requestOptions = {
