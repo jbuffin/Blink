@@ -17,22 +17,12 @@ var Socket = function SocketConstructor(socket) {
         if (! message.rooms) {
           return false;
         }
-
-        if (message.event == 'new_comment') {
-          if(this.authorized) {
-            new MessageHandler({
-              message: message,
-              socket: this
-            }).handle();
-          }
-        } else {
-          // broadcast the event to every room
-          message.rooms.forEach(function(room) {
-            var clientMessage = Utils.newMessage(room, message.event, message.payload);
-            this.socket.broadcast.to(room).emit('message', clientMessage);
-          }.bind(this));
+        if(this.authorized) {
+          new MessageHandler({
+            message: message,
+            socket: this
+          }).handle();
         }
-
       }.bind(this));
   };
 
