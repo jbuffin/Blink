@@ -20,23 +20,19 @@ var Socket = function SocketConstructor(socket) {
 
         if (message.event == 'new_comment') {
           if(this.authorized) {
-            MessageHandler({
+            new MessageHandler({
               message: message,
-              socket: this.socket
+              socket: this
             }).handle();
           }
-
-          return;
-        }
-
-        // broadcast the event to every room
-        for (var index in message.rooms) {
-          if (message.rooms.hasOwnProperty(index)) {
-            var room = message.rooms[index];
+        } else {
+          // broadcast the event to every room
+          message.rooms.forEach(function(room) {
             var clientMessage = Utils.newMessage(room, message.event, message.payload);
             this.socket.broadcast.to(room).emit('message', clientMessage);
-          }
+          }.bind(this));
         }
+
       }.bind(this));
   };
 
@@ -52,19 +48,18 @@ Socket.prototype.joinRoom = function joinRoom(data) {
     var silent = (room.indexOf('presence-') == 0);
     this.socket.join(room);
     if(!silent) {
-      MessageHandler({
+      new MessageHandler({
         message: {
           payload: {
             type: 'join_room'
           },
           access_token:data.access_token,
-          room: room
+          rooms: [room]
         },
-        socket: this.socket
+        socket: this
       }).handle();
     }
   }
-  return this;
 };
 
 Socket.prototype.leaveRoom = function leaveRoom(data) {
@@ -75,19 +70,18 @@ Socket.prototype.leaveRoom = function leaveRoom(data) {
     var silent = (room.indexOf('presence-') == 0);
     this.socket.leave(room);
     if(!silent) {
-      MessageHandler({
+      new MessageHandler({
         message: {
           payload: {
             type: 'leave_room'
           },
           access_token: data.access_token,
-          room: room
+          rooms: [room]
         },
-        socket: this.socket
+        socket: this
       }).handle();
     }
   }
-  return this;
 };
 
 module.exports = Socket;
