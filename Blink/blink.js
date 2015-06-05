@@ -28,4 +28,13 @@ Blink.prototype.newSocket = function newSocket(socket) {
   }.bind(this));
 };
 
+Blink.prototype.externalMessage = function externalMessage(data) {
+  if(this.emitter) {
+    this.emitter.to(data.room).emit('message', data);
+    return true;
+  } else {
+    return false;
+  }
+};
+
 module.exports = new Blink();
