@@ -65,7 +65,7 @@ module.exports = MessageHandler;
 function defaultHandler() {
   // broadcast the event to every room
   this.rooms.forEach(function(room) {
-    var clientMessage = Utils.newMessage(room, this.message.event, message.payload);
+    var clientMessage = Utils.newMessage(room, this.message.event, this.message.payload);
     this.socket.socket.broadcast.to(room).emit('message', clientMessage);
   }.bind(this));
 }
