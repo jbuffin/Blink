@@ -76,6 +76,8 @@ function request(options) {
     qs: {access_token:this.access_token},
     json: options.json
   };
+
+  // @todo do better error handling request.on('error')
   var boundCallback = requestCallback.bind(this);
   switch (options.requestType) {
     case requestTypes.POST:
@@ -89,7 +91,7 @@ function request(options) {
   }
 
   function requestCallback(error, response, body) {
-    if(body.ok) {
+    if(body && body.ok) {
       console.log(body.data);
       this.rooms.forEach(function(room) {
         this.socket.socket.broadcast.to(room).emit(EMIT_EVENT, Utils.newMessage(room, options.responseEvent, body.data));
@@ -97,6 +99,8 @@ function request(options) {
           this.socket.socket.to('presence-'+room).emit(EMIT_EVENT, Utils.newMessage('presence-'+room, options.responseEvent, body.data));
         }
       }.bind(this));
+    } else {
+      console.error(error);
     }
   }
 };
