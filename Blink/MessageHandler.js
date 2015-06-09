@@ -101,6 +101,7 @@ function request(options) {
       }.bind(this));
     } else {
       console.error('There was an error: ', options);
+      console.error('Request Type:', options.requestType == requestTypes.POST ? 'POST' : (options.requestType == requestTypes.PUT ? 'PUT' : ''));
       console.error(error);
     }
   }
