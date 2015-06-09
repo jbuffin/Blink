@@ -100,6 +100,7 @@ function request(options) {
         }
       }.bind(this));
     } else {
+      console.error('There was an error: ', options);
       console.error(error);
     }
   }
