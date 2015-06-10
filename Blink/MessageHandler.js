@@ -68,7 +68,7 @@ function defaultHandler() {
   console.log('defaultHandler:', this.message);
   this.rooms.forEach(function(room) {
     var clientMessage = Utils.newMessage(room, this.message.event, this.message.payload);
-    this.socket.socket.broadcast.to(room).emit('message', clientMessage);
+    this.socket.socket.broadcast.to(room).emit(EMIT_EVENT, clientMessage);
   }.bind(this));
 }
 
