@@ -14,7 +14,7 @@ EventsController.prototype.handleIncomingEvent = function handleIncomingEvent(re
       response = 'Was not able to process the message';
     }
   } else {
-     response = 'Invalid API Key';
+    response = 'Invalid API Key';
   }
   res.json(Utils.buildResponseJson(success, response));
 };
