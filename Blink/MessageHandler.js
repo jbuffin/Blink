@@ -50,7 +50,8 @@ var messageHandlers = {
       presence: true
     };
     request.call(this, options);
-  }
+  },
+  'give_wink': defaultHandler
 };
 
 function MessageHandler(opts) {
