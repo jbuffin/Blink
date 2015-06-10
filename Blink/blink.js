@@ -1,6 +1,7 @@
 'use strict';
 var config = require('../config');
 var Socket = require('./socket');
+var Utils = require('../utils');
 
 var Blink = function BlinkConstructor() {
   this._sockets = [];
@@ -26,7 +27,8 @@ Blink.prototype.newSocket = function newSocket(socket) {
 };
 
 Blink.prototype.externalMessage = function externalMessage(data) {
-  this.io.to(data.room).emit('message', data);
+  var message = Utils.newMessage(data.room, data.event, data.payload)
+  this.io.to(data.room).emit('message', message);
   return true;
 };
 
