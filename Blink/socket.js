@@ -34,13 +34,7 @@ Socket.prototype.joinRoom = function joinRoom(data) {
     this.socket.join(room);
     if(!silent) {
       new MessageHandler({
-        message: {
-          payload: {
-            type: 'join_room'
-          },
-          access_token:data.access_token,
-          rooms: [room]
-        },
+        message: data,
         socket: this
       }).handle();
     }
@@ -56,13 +50,7 @@ Socket.prototype.leaveRoom = function leaveRoom(data) {
     this.socket.leave(room);
     if(!silent) {
       new MessageHandler({
-        message: {
-          payload: {
-            type: 'leave_room'
-          },
-          access_token: data.access_token,
-          rooms: [room]
-        },
+        message: data,
         socket: this
       }).handle();
     }

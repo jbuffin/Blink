@@ -56,9 +56,10 @@ var messageHandlers = {
 
 function MessageHandler(opts) {
   this.message = opts.message;
-  this.handle = (messageHandlers[opts.message.payload.type] || defaultHandler);
+  this.handle = (messageHandlers[opts.message.event] || defaultHandler);
+
   this.socket = opts.socket;
-  this.rooms = opts.message.rooms;
+  this.rooms = opts.message.rooms || [opts.message.room];
   this.access_token = opts.message.access_token;
 }
 module.exports = MessageHandler;
