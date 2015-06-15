@@ -51,7 +51,20 @@ var messageHandlers = {
     };
     request.call(this, options);
   },
-  'give_wink': defaultHandler
+  'give_wink': function() {
+    var room = this.rooms[0],
+    responseEvent = 'give_wink',
+    remoteEndpoint = '/streams/'+room+'/wink';
+
+    var options = {
+      endpoint: Utils.buildWinkUrl(remoteEndpoint),
+      json: {},
+      responseEvent: responseEvent,
+      requestType: requestTypes.POST,
+      presence: false,
+    };
+    request.call(this, options);
+  }
 };
 
 function MessageHandler(opts) {
@@ -66,7 +79,6 @@ module.exports = MessageHandler;
 
 function defaultHandler() {
   // broadcast the event to every room
-  console.log('defaultHandler:', this.message);
   this.rooms.forEach(function(room) {
     var clientMessage = Utils.newMessage(room, this.message.event, this.message.payload);
     this.socket.socket.broadcast.to(room).emit(EMIT_EVENT, clientMessage);
