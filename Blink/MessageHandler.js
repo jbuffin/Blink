@@ -70,7 +70,6 @@ var messageHandlers = {
 function MessageHandler(opts) {
   this.message = opts.message;
   this.handle = (messageHandlers[opts.message.event] || defaultHandler);
-
   this.socket = opts.socket;
   this.rooms = opts.message.rooms || [opts.message.room];
   this.access_token = opts.message.access_token;
@@ -107,7 +106,7 @@ function request(options) {
 
   function requestCallback(error, response, body) {
     if(body && body.ok) {
-      console.log(body.data);
+      console.log('response body:', body);
       this.rooms.forEach(function(room) {
         this.socket.socket.broadcast.to(room).emit(EMIT_EVENT, Utils.newMessage(room, options.responseEvent, body.data));
         if(options.presence) {
