@@ -10,7 +10,7 @@ var requestTypes = {
 };
 
 var messageHandlers = {
-  comment: function() {
+  'new_comment': function() {
     var room = this.rooms[0],
         comment = this.message.payload.comment,
         remoteEndpoint = '/streams/'+room+'/comments';
