@@ -23,7 +23,7 @@ var messageHandlers = {
     };
     request.call(this, options);
   },
-  'join_room': function() {
+  'blink:join_room': function() {
     var room = this.rooms[0],
         responseEvent = 'joined_room',
         remoteEndpoint = '/streams/'+room+'/viewing';
@@ -37,7 +37,7 @@ var messageHandlers = {
     };
     request.call(this, options);
   },
-  'leave_room': function() {
+  'blink:leave_room': function() {
     var room = this.rooms[0],
         responseEvent = 'left_room',
         remoteEndpoint = '/streams/'+room+'/viewing';
