@@ -27,8 +27,8 @@ Socket.prototype.on = function on(event, callback) {
 };
 
 Socket.prototype.joinRoom = function joinRoom(data) {
-  console.log('joining', data.room);
-  var room = data.room;
+  console.log('joining', data.rooms);
+  var room = data.rooms;
   if(room) {
     var silent = (room.indexOf('presence-') == 0);
     this.socket.join(room);
@@ -42,8 +42,8 @@ Socket.prototype.joinRoom = function joinRoom(data) {
 };
 
 Socket.prototype.leaveRoom = function leaveRoom(data) {
-  console.log('leaving', data.room);
-  var room = data.room;
+  console.log('leaving', data.rooms);
+  var room = data.rooms;
   var silent = false;
   if(room) {
     var silent = (room.indexOf('presence-') == 0);

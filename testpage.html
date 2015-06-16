@@ -47,8 +47,12 @@
           });
         socket.on('authorized', function() {
           var msg = {
-            room: room,
-            access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg'
+            event: 'blink:join_room',
+            rooms: [room],
+            access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg',
+            payload: {
+              rooms: room,
+            }
           };
           console.log('authorized, joining', msg);
           socket.emit('blink:join_room', msg);
@@ -64,11 +68,11 @@
           var opt = msg.slice(sep+1);
           if(command === 'join') {
             console.log('joining', opt);
-            socket.emit('blink:join_room', {room: opt, access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg'});
+            window.emit(opt, 'blink:join_room', {rooms: opt});
           }
           if(command === 'leave') {
             console.log('leaving ', opt);
-            socket.emit('blink:leave_room', {room: opt, access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg'});
+            window.emit(opt, 'blink:leave_room', {rooms: opt});
           }
         } else {
           sendMessage(msg);
