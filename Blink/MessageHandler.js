@@ -64,6 +64,19 @@ var messageHandlers = {
       presence: false,
     };
     request.call(this, options);
+  },
+  'kick_coanchor': function() {
+    var room = this.rooms[0],
+        responseEvent = 'kick_coanchor',
+        remoteEndpoint = '/streams/'+room+'/co-anchor/kick';
+    var options = {
+      endpoint: Utils.buildWinkUrl(remoteEndpoint),
+      json: {},
+      responseEvent: responseEvent,
+      requestType: requestTypes.POST,
+      presence: false
+    };
+    request.call(this, options);
   }
 };
 
