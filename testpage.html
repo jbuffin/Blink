@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      window.socket = io();
+      var room = '83n'
+
+      window.emit = function(room, event, data) {
+        var payload = {
+          event: event,
+          rooms: [room],
+          access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg',
+          payload: data,
+        };
+        console.log('Sending...', payload);
+        socket.emit('client_event', payload);
+      }
+
+      socket.on('connect', function() {
+        socket.emit(
+          'authorize',
+          {
+            api_key: '4BwbMJKnNRmYx2VmaL8WamcJRBvlkuTx1gtfx5M5XJQncuvCNfzWHHRJcitjbGf'
+          });
+        socket.on('authorized', function() {
+          var msg = {
+            event: 'blink:join_room',
+            rooms: [room],
+            access_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjQsImp0aSI6IkpLM3NJRWtua04weTFuMER5cXExR1A1TkdqTU1UNGVFIiwiaWF0IjoxNDMzMzU4NDMxLCJpc3MiOiJXaW5rQXBpIn0.oEOlc_r5B8d80yNOyTIXy0l1CJrPI-zWjEjFcKMMBfg',
+            payload: {
+              rooms: room,
+            }
+          };
+          console.log('authorized, joining', msg);
+          socket.emit('blink:join_room', msg);
+        });
+
+        appendMessage('connected');
+      });
+      $('form').submit(function() {
+        var msg = $('#m').val();
+        if(msg.indexOf('/') === 0) {
+          var sep = msg.indexOf(' ') != -1 ? msg.indexOf(' ') : msg.length;
+          var command = msg.slice(1, sep);
+          var opt = msg.slice(sep+1);
+          if(command === 'join') {
+            console.log('joining', opt);
+            window.emit(opt, 'blink:join_room', {rooms: opt});
+          }
+          if(command === 'leave') {
+            console.log('leaving ', opt);
+            window.emit(opt, 'blink:leave_room', {rooms: opt});
+          }
+        } else {
+          sendMessage(msg);
+        }
+        $('#m').val('');
+        return false;
+      });
+      socket.on('message', function(msg) {
+        console.log(msg);
+        if (msg.event === 'new_comment') {
+          appendMessage(msg.payload.comment);
+        }
+      });
+      socket.on('disconnect', function(msg) {
+        appendMessage('you\'ve been disconnected');
+      });
+      function appendMessage(msg) {
+        $('#messages').append($('<li>').text(msg));
+      }
+
+      function sendMessage(msg) {
+        emit(room, 'new_comment', {
+          type: 'comment',
+          comment: msg,
+        });
+
+        appendMessage(msg);
+      }
+    </script>
+  </body>
+</html>
